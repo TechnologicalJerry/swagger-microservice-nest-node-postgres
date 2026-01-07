@@ -10,19 +10,26 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true,
+      transform: true,
     }),
   );
 
+  // Enable CORS
+  app.enableCors();
+
   const config = new DocumentBuilder()
-    .setTitle('API Gateway')
-    .setDescription('Public Gateway for Microservices')
+    .setTitle('Warehouse Management API Gateway')
+    .setDescription('API Gateway for Warehouse Management Microservices')
     .setVersion('1.0')
     .addBearerAuth()
+    .addServer('http://localhost:3000', 'Development server')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);
 
-  await app.listen(process.env.port ?? 3000);
+  await app.listen(process.env.PORT || 3000);
+  console.log(`API Gateway is running on: ${await app.getUrl()}`);
+  console.log(`Swagger documentation available at: ${await app.getUrl()}/swagger`);
 }
 bootstrap();
