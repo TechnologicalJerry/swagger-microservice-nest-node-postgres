@@ -1,12 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
-import { InventoryServiceService } from './inventory-service.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Inventory Service')
 @Controller()
 export class InventoryServiceController {
-  constructor(private readonly inventoryServiceService: InventoryServiceService) {}
-
-  @Get()
-  getHello(): string {
-    return this.inventoryServiceService.getHello();
+  @Get('health')
+  getHealth(): { status: string; service: string } {
+    return { status: 'ok', service: 'inventory-service' };
   }
 }
