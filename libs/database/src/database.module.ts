@@ -1,8 +1,18 @@
-import { Module } from '@nestjs/common';
-import { DatabaseService } from './database.service';
+import { Module, Global } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
+@Global()
 @Module({
-  providers: [DatabaseService],
-  exports: [DatabaseService],
+  imports: [
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>('MONGODB_URI') || 'mongodb://localhost:27017/warehouse-management',
+      }),
+      inject: [ConfigService],
+    }),
+  ],
+  exports: [MongooseModule],
 })
 export class DatabaseModule {}
