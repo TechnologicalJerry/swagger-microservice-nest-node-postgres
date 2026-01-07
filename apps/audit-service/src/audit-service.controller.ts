@@ -1,12 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
-import { AuditServiceService } from './audit-service.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Audit Service')
 @Controller()
 export class AuditServiceController {
-  constructor(private readonly auditServiceService: AuditServiceService) {}
-
-  @Get()
-  getHello(): string {
-    return this.auditServiceService.getHello();
+  @Get('health')
+  getHealth(): { status: string; service: string } {
+    return { status: 'ok', service: 'audit-service' };
   }
 }
