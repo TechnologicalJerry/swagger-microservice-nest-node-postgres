@@ -1,12 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
-import { ProductsServiceService } from './products-service.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Products Service')
 @Controller()
 export class ProductsServiceController {
-  constructor(private readonly productsServiceService: ProductsServiceService) {}
-
-  @Get()
-  getHello(): string {
-    return this.productsServiceService.getHello();
+  @Get('health')
+  getHealth(): { status: string; service: string } {
+    return { status: 'ok', service: 'products-service' };
   }
 }
