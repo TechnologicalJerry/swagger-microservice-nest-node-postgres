@@ -1,9 +1,17 @@
 import { Module } from '@nestjs/common';
-import { OrdersController } from './orders.controller';
+import { MongooseModule } from '@nestjs/mongoose';
 import { OrdersService } from './orders.service';
+import { OrdersController } from './orders.controller';
+import { Order, OrderSchema } from './schemas/order.schema';
+import { DatabaseModule } from '@app/database';
 
 @Module({
+  imports: [
+    DatabaseModule,
+    MongooseModule.forFeature([{ name: Order.name, schema: OrderSchema }]),
+  ],
   controllers: [OrdersController],
-  providers: [OrdersService]
+  providers: [OrdersService],
+  exports: [OrdersService],
 })
 export class OrdersModule {}
