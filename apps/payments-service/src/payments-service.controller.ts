@@ -1,12 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
-import { PaymentsServiceService } from './payments-service.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Payments Service')
 @Controller()
 export class PaymentsServiceController {
-  constructor(private readonly paymentsServiceService: PaymentsServiceService) {}
-
-  @Get()
-  getHello(): string {
-    return this.paymentsServiceService.getHello();
+  @Get('health')
+  getHealth(): { status: string; service: string } {
+    return { status: 'ok', service: 'payments-service' };
   }
 }
